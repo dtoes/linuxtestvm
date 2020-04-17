@@ -81,6 +81,12 @@ resource "azurerm_network_interface" "linux" {
     }
 }
 
+  resource "azurerm_marketplace_agreement" "example" {
+  publisher = "cognosys"
+  offer     = "apache-web-server-with-centos-75-free"
+  plan      = "apache-web-server-with-centos-75-free"
+}
+
 resource "azurerm_virtual_machine" "example" {
   name                  = "${var.prefix}-lx"
   location              = azurerm_resource_group.main.location
