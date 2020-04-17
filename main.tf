@@ -34,22 +34,6 @@ resource "azurerm_public_ip" "mypubliclinuxip" {
     }
 }
 
-resource "azurerm_network_interface" "linux" {
-  name                = "${var.prefix}-lxnic"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
-
-  ip_configuration {
-    name                          = "internal"
-    subnet_id                     = azurerm_subnet.intern.id
-    private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.mypubliclinuxip.id
-  }
-            tags = {
-        environment = "${var.omgeving}"
-    }
-}
-
 resource "azurerm_network_security_group" "webserver" {
   name                = "http_webserver"
   location            = azurerm_resource_group.main.location
@@ -81,6 +65,22 @@ resource "azurerm_network_security_group" "webserver" {
     }
 }
 
+resource "azurerm_network_interface" "linux" {
+  name                = "${var.prefix}-lxnic"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = azurerm_subnet.intern.id
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.mypubliclinuxip.id
+  }
+            tags = {
+        environment = "${var.omgeving}"
+    }
+}
+
 resource "azurerm_virtual_machine" "example" {
   name                  = "${var.prefix}-lx"
   location              = azurerm_resource_group.main.location
@@ -89,10 +89,10 @@ resource "azurerm_virtual_machine" "example" {
   vm_size               = "Standard_F2"
 
   storage_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
-    version   = "latest"
+    publisher = "cognosys"
+    offer     = "apache-web-server-with-centos-75-free"
+    sku       = "apache-web-server-with-centos-75-free"
+    version   = "1.2019.1009"
   }
 
   storage_os_disk {
@@ -105,7 +105,7 @@ resource "azurerm_virtual_machine" "example" {
   os_profile {
     computer_name  = "Linux machine"
     admin_username = var.gebruikersnaam
-    admin_password = var.wachtwoord
+    admin_password = var.wachtwoord   
   }
   
 
