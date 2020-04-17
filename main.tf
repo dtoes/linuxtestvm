@@ -92,7 +92,13 @@ resource "azurerm_virtual_machine" "example" {
     publisher = "cognosys"
     offer     = "apache-web-server-with-centos-75-free"
     sku       = "apache-web-server-with-centos-75-free"
-    version   = "1.2019.1009"
+    version   = "latest"
+  }
+
+  plan {
+    name      = "apache-web-server-with-centos-75-free"
+    publisher = "cognosys"
+    product   = "apache-web-server-with-centos-75-free"
   }
 
   storage_os_disk {
